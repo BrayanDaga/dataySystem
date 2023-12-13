@@ -11,9 +11,10 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.sql.*;
 import clases.Conexion;
-import com.mysql.cj.xdevapi.PreparableStatement;
+import com.datasystem.controller.UsuarioController;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import com.datasystem.modelos.Usuario;
 
 /**
  *
@@ -21,6 +22,7 @@ import javax.swing.WindowConstants;
  */
 public class RegistrarUsuarios extends javax.swing.JFrame {
 
+    private UsuarioController usuarioController;
     String user;
 
     /**
@@ -35,12 +37,14 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         setTitle("Registros de Usuarios - Sesion de: " + user);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-
         ImageIcon wallpaper = new ImageIcon("src/images/wallpaperPrincipal.jpg");
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(
                 jLabel_Wallpaper.getWidth(), jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
+
+        UsuarioController usuarioController = new UsuarioController();
+
     }
 
     /**
@@ -161,8 +165,36 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*	private void guardar() {
+		if (textoNombre.getText().isBlank() || textoDescripcion.getText().isBlank()) {
+			JOptionPane.showMessageDialog(this, "Los campos Nombre y Descripción son requeridos.");
+			return;
+		}
+
+		Integer cantidadInt;
+
+		try {
+			cantidadInt = Integer.parseInt(textoCantidad.getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, String
+					.format("El campo cantidad debe ser numérico dentro del rango %d y %d.", 0, Integer.MAX_VALUE));
+			return;
+		}
+
+		var producto = new Producto(textoNombre.getText(), textoDescripcion.getText(), cantidadInt);
+
+		var categoria = (Categoria) comboCategoria.getSelectedItem();
+
+		this.productoController.guardar(producto, categoria.getId());
+
+		JOptionPane.showMessageDialog(this, "Registrado con éxito!");
+
+		this.limpiarFormulario();
+	}*/
+
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
+
         int permisos_cmb, validacion = 0;
         String nombre, mail, telefono, username, pass, permisos_string = null;
 
@@ -208,61 +240,32 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
             permisos_string = "Tecnico";
         }
 
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement ps = cn.prepareStatement("SELECT username FROM usuarios  where username = ? ", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                txt_Username.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "El nombre de usuario no esta disponible");
-                cn.close();
+        usuarioController =  new UsuarioController();
+        boolean existe = usuarioController.existeUsuarioConUsername(username);
+
+        if (existe) {
+            txt_Username.setBackground(Color.red);
+            JOptionPane.showMessageDialog(null, "El nombre de usuario no esta disponible");
+        } else {
+            if (validacion == 0) {
+                Usuario usuario = new Usuario(nombre, mail, telefono, username, pass, permisos_string, "Activo", user);
+                usuarioController.guardar(usuario);
+                Limpiar();
+
+                txt_Username.setBackground(Color.green);
+                txt_Mail.setBackground(Color.green);
+                txt_Username.setBackground(Color.green);
+                txt_Password.setBackground(Color.green);
+                txt_Mail.setBackground(Color.green);
+                txt_Telefono.setBackground(Color.green);
+
+                JOptionPane.showMessageDialog(null, "Registro exitoso");
+                this.dispose();
+
             } else {
-                cn.close();
-                if (validacion == 0) {
-                    try {
-                        Connection cn2 = Conexion.conectar();
-                        PreparedStatement pst2 = cn2.prepareStatement("INSERT INTO usuarios "
-                                + "VALUES (?,?,?,?,?,?,?,?,?)");
-                        pst2.setInt(1, 0);
-                        pst2.setString(2, nombre);
-                        pst2.setString(3, mail);
-                        pst2.setString(4, telefono);
-                        pst2.setString(5, username);
-                        pst2.setString(6, pass);
-                        pst2.setString(7, permisos_string);
-                        pst2.setString(8, "Activo");
-                        pst2.setString(9, user);
-
-                        pst2.executeUpdate();
-                        cn2.close();
-
-                        Limpiar();
-                        
-                        txt_Username.setBackground(Color.green);
-                        txt_Mail.setBackground(Color.green);
-                        txt_Username.setBackground(Color.green);
-                        txt_Password.setBackground(Color.green);
-                        txt_Mail.setBackground(Color.green);
-                        txt_Telefono.setBackground(Color.green);
-
-                        JOptionPane.showMessageDialog(null, "Registro exitoso");
-                        this.dispose();
-
-                    } catch (Exception e) {
-
-                        System.out.println("Error en Reigstrar usuario" + e);
-                        JOptionPane.showMessageDialog(null, "Error al registrar , contacte con el administrador");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos");
-                }
-
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos");
             }
 
-        } catch (Exception e) {
-            System.out.println("Error en validar nombre de usuario");
-            JOptionPane.showMessageDialog(null, "ERROR AL COMPARAR usuario");
         }
 
     }//GEN-LAST:event_jButton1MouseClicked

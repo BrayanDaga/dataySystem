@@ -33,7 +33,7 @@ public class Administrador extends javax.swing.JFrame {
         
         setSize(650, 430);
         setResizable(false);
-        setTitle("Administrador - Sessionde " + user);
+        setTitle("Administrador - Session de " + user);
         setLocationRelativeTo(null);
         
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

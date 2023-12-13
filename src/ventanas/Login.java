@@ -5,6 +5,8 @@
 package ventanas;
 
 import clases.Conexion;
+import com.datasystem.controller.UsuarioController;
+import com.datasystem.modelos.Usuario;
 import java.sql.*;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -18,9 +20,10 @@ import javax.swing.JRootPane;
  * @author bm_vd
  */
 public class Login extends javax.swing.JFrame {
-    public static String user = "" ;
+
+    public static String user = "";
     public String pass = "";
-    
+
     /**
      * Creates new form Login
      */
@@ -30,19 +33,19 @@ public class Login extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Acceso al Sistema");
-    
+
         ImageIcon wallpaper = new ImageIcon("src/images/wallpaperPrincipal.jpg");
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(
                 JLabelWallpaper.getWidth(), JLabelWallpaper.getHeight(), Image.SCALE_DEFAULT));
         JLabelWallpaper.setIcon(icono);
         this.repaint();
-        
+
         ImageIcon wallpaperLogo = new ImageIcon("src/images/DS.png");
         Icon iconoLogo = new ImageIcon(wallpaperLogo.getImage().getScaledInstance(
                 jLabelLogo.getWidth(), jLabelLogo.getHeight(), Image.SCALE_DEFAULT));
         jLabelLogo.setIcon(iconoLogo);
         this.repaint();
-        
+
     }
 
     @Override
@@ -50,10 +53,6 @@ public class Login extends javax.swing.JFrame {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
         return retValue;
     }
-
-
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,9 +121,8 @@ public class Login extends javax.swing.JFrame {
     private void jButton_accederMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_accederMouseClicked
         login();
     }//GEN-LAST:event_jButton_accederMouseClicked
-    
-  
-    
+
+
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         login();
     }//GEN-LAST:event_formKeyPressed
@@ -133,52 +131,40 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formKeyReleased
 
-    
-      private void login(){
-               user = txt_user.getText().trim();
+    private void login() {
+        user = txt_user.getText().trim();
         pass = txt_password.getText().trim();
-        if (!user.equals("")|| !pass.equals("")  ) {
-            try {
-                Connection cn  =  Conexion.conectar();
-                PreparedStatement ps = cn.prepareStatement(  "SELECT tipo_nivel,estatus FROM "
-                        + "usuarios where username = ? and password =  ? ",Statement.RETURN_GENERATED_KEYS );
-              	ps.setString(1, user);
-                ps.setString(2, pass);
-                ResultSet rs = ps.executeQuery();
-                if( rs.next()){
-                    
-                    System.out.println("Login exitoso");
-                    System.out.println(rs.getString("tipo_nivel"));
-                    System.out.println(rs.getString("estatus"));
-                    String tipo_nivel = rs.getString("tipo_nivel");
-                    String estatus = rs.getString("estatus");
-                    
-                    if(tipo_nivel.equals("Administrador") &&  estatus.equals("Activo") ){
-                        dispose();
-                        new Administrador().setVisible(true);
-                    }
-                     if(tipo_nivel.equals("Capturista") &&  estatus.equals("Activo") ){
-                        dispose();
-                        new Capturista().setVisible(true);
-                    }
-                      if(tipo_nivel.equals("Tecnico") &&  estatus.equals("Activo") ){
-                        dispose();
-                        new Tecnico().setVisible(true);
-                    }
-                    
-                }else{
-                     txt_user.setText("");
-                     txt_password.setText("");
-                     JOptionPane.showMessageDialog(null, "Datos ingresados incorrectos");
+        if (!user.equals("") || !pass.equals("")) {
+            UsuarioController usuarioController = new UsuarioController();
+            Usuario usuario = usuarioController.logearse(user, pass);
+
+            if (usuario != null) {
+                String tipo_nivel = usuario.getTipo_nivel();
+                String estatus = usuario.getEstatus();
+
+                if (tipo_nivel.equals("Administrador") && estatus.equals("Activo")) {
+                    dispose();
+                    new Administrador().setVisible(true);
                 }
-            } catch (SQLException e) {
-                System.out.println(e);
+                if (tipo_nivel.equals("Capturista") && estatus.equals("Activo")) {
+                    dispose();
+                    new Capturista().setVisible(true);
+                }
+                if (tipo_nivel.equals("Tecnico") && estatus.equals("Activo")) {
+                    dispose();
+                    new Tecnico().setVisible(true);
+                }
+            } else {
+                txt_user.setText("");
+                txt_password.setText("");
+                JOptionPane.showMessageDialog(null, "Datos ingresados incorrectos");
             }
-        }else{
-            JOptionPane.showMessageDialog(null,"Debes llenar todos los campos");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
