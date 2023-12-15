@@ -1,17 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.datasystem.dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.*;
 
 import com.datasystem.modelos.Usuario;
-import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -112,5 +108,44 @@ public class UsuarioDAO {
                 e.printStackTrace();
             }
         }
+    }
+
+    /*	public List<Reserva> buscar() {
+		List<Reserva> reservas = new ArrayList<Reserva>();
+		try {
+			String sql = "SELECT id, fechaEntrada , fechaSalida, valor, formaPago FROM reservas";
+			try(PreparedStatement pstm = con.prepareStatement(sql)){
+				pstm.execute();
+				transformarResultado(reservas, pstm );
+			}
+			return reservas;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+     */
+    public List<Usuario> listar() {
+        List<Usuario> usuarios = new ArrayList<Usuario>();
+        try {
+            var querySelect = "SELECT id_usuario, nombre_usuario, username, tipo_nivel, estatus from usuarios";
+            final PreparedStatement statement = con.prepareStatement(querySelect);
+
+            try (statement) {
+                statement.execute();
+
+                final ResultSet resultSet = statement.getResultSet();
+
+                try (resultSet) {
+                    while (resultSet.next()) {
+                        usuarios.add(new Usuario(resultSet.getString("nombre_usuario"), resultSet.getString("username"),
+                                resultSet.getString("tipo_nivel")));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return usuarios;
     }
 }

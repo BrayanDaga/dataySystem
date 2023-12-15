@@ -27,7 +27,7 @@ public class Usuario {
     public Usuario() {
     }
 
-     public Usuario( String nombre_usuario, String email, String telefono, String username, String password, String tipo_nivel, String estatus, String registrado_por) {
+    public Usuario(String nombre_usuario, String email, String telefono, String username, String password, String tipo_nivel, String estatus, String registrado_por) {
         this.nombre_usuario = nombre_usuario;
         this.email = email;
         this.telefono = telefono;
@@ -39,10 +39,15 @@ public class Usuario {
     }
 
     public Usuario(String tipo_nivel, String estatus) {
-         this.tipo_nivel = tipo_nivel;
+        this.tipo_nivel = tipo_nivel;
         this.estatus = estatus;
     }
 
+    public Usuario(String nombre_usuario, String username, String tipo_nivel) {
+        this.nombre_usuario = nombre_usuario;
+        this.username = username;
+        this.tipo_nivel = tipo_nivel;
+    }
 
     public int getId_usuario() {
         return id_usuario;

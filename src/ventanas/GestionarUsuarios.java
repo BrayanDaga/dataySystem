@@ -6,6 +6,7 @@ package ventanas;
 
 import java.sql.*;
 import clases.Conexion;
+import com.datasystem.controller.UsuarioController;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -29,8 +30,10 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     String user = "";
     public static String user_update = "";
     DefaultTableModel model = new DefaultTableModel();
+    UsuarioController usuarioController;
 
     public GestionarUsuarios() {
+        usuarioController =  new UsuarioController();
         initComponents();
         user = Login.user;
         setTitle("Usuarios registrados - Sesion de " + user);
@@ -45,32 +48,18 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
 
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("SELECT id_usuario, nombre_usuario, username, tipo_nivel, estatus from usuarios");
-            ResultSet rs = pst.executeQuery();
+        jTable_Usuarios = new JTable(model);
+        jScrollPane1.setViewportView(jTable_Usuarios);
 
-            jTable_Usuarios = new JTable(model);
-            jScrollPane1.setViewportView(jTable_Usuarios);
+        model.addColumn("");
+        model.addColumn("Nombre");
+        model.addColumn("Username");
+        model.addColumn("Estatus");
 
-            model.addColumn("");
-            model.addColumn("Nombre");
-            model.addColumn("Username");
-            model.addColumn("Estatus");
-
-            while (rs.next()) {
-                Object[] fila = new Object[5];
-                for (int i = 0; i < 5; i++) {
-                    fila[i] = rs.getObject(i + 1);
-                }
-                model.addRow(fila);
-            }
-            cn.close();
-
-        } catch (SQLException e) {
-            System.out.println("Error al llenar TABLA "+e);
-            JOptionPane.showMessageDialog(null, "Erro al mostrar informacion, Contacte al administrador");
-        }
+        var usuarios = this.usuarioController.listar();
+        usuarios.forEach(usuario -> model.addRow(new Object[]{
+            usuario.getNombre_usuario(), usuario.getUsername(), usuario.getTipo_nivel()
+        }));
 
     }
 

@@ -165,32 +165,8 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /*	private void guardar() {
-		if (textoNombre.getText().isBlank() || textoDescripcion.getText().isBlank()) {
-			JOptionPane.showMessageDialog(this, "Los campos Nombre y Descripción son requeridos.");
-			return;
-		}
-
-		Integer cantidadInt;
-
-		try {
-			cantidadInt = Integer.parseInt(textoCantidad.getText());
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(this, String
-					.format("El campo cantidad debe ser numérico dentro del rango %d y %d.", 0, Integer.MAX_VALUE));
-			return;
-		}
-
-		var producto = new Producto(textoNombre.getText(), textoDescripcion.getText(), cantidadInt);
-
-		var categoria = (Categoria) comboCategoria.getSelectedItem();
-
-		this.productoController.guardar(producto, categoria.getId());
-
-		JOptionPane.showMessageDialog(this, "Registrado con éxito!");
-
-		this.limpiarFormulario();
-	}*/
+ 
+   
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:

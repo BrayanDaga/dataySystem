@@ -7,6 +7,7 @@ package com.datasystem.controller;
 import com.datasystem.dao.UsuarioDAO;
 import com.datasystem.factory.ConnectionFactory;
 import com.datasystem.modelos.Usuario;
+import java.util.List;
 public class UsuarioController {
     private UsuarioDAO usuarioDAO;
 
@@ -26,5 +27,9 @@ public class UsuarioController {
     
     public Usuario logearse(String user, String pass){
         return usuarioDAO.loguearse(user, pass);
+    }
+    
+    public List<Usuario> listar(){
+        return usuarioDAO.listar();
     }
 }
