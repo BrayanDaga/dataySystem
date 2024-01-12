@@ -74,14 +74,7 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(getIconImage());
         setSize(new java.awt.Dimension(400, 550));
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                formKeyReleased(evt);
-            }
-        });
+       
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txt_user.setBackground(new java.awt.Color(153, 153, 255));
@@ -96,7 +89,10 @@ public class Login extends javax.swing.JFrame {
         txt_password.setForeground(new java.awt.Color(255, 255, 255));
         txt_password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_password.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+     
         getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 370, 210, -1));
+
+        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/DS.png"))); // NOI18N
         getContentPane().add(jLabelLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 270, 270));
 
         jButton_acceder.setBackground(new java.awt.Color(153, 153, 255));
@@ -104,9 +100,10 @@ public class Login extends javax.swing.JFrame {
         jButton_acceder.setForeground(new java.awt.Color(255, 255, 255));
         jButton_acceder.setText("Acceder");
         jButton_acceder.setBorder(null);
-        jButton_acceder.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton_accederMouseClicked(evt);
+
+        jButton_acceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_accederActionPerformed(evt);
             }
         });
         getContentPane().add(jButton_acceder, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 420, 210, 35));
@@ -114,25 +111,20 @@ public class Login extends javax.swing.JFrame {
         jLabel_footer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_footer.setText("Creadp por tutoriales de Ernesto");
         getContentPane().add(jLabel_footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, 210, -1));
+
+        JLabelWallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wallpaperPrincipal.jpg"))); // NOI18N
         getContentPane().add(JLabelWallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton_accederMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_accederMouseClicked
-        login();
-    }//GEN-LAST:event_jButton_accederMouseClicked
-
-
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        login();
-    }//GEN-LAST:event_formKeyPressed
-
-    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+    private void jButton_accederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_accederActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_formKeyReleased
+        acceder();
+    }//GEN-LAST:event_jButton_accederActionPerformed
+	
 
-    private void login() {
+    private void acceder() {
         user = txt_user.getText().trim();
         pass = txt_password.getText().trim();
         if (!user.equals("") || !pass.equals("")) {

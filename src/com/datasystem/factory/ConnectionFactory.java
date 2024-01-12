@@ -20,7 +20,9 @@ public class ConnectionFactory {
         pooledDataSource.setJdbcUrl("jdbc:mysql://localhost/bd_ds?useTimeZone=true&serverTimeZone=UTC");
         pooledDataSource.setUser("root");
         pooledDataSource.setPassword("");
-        pooledDataSource.setMaxPoolSize(10);
+        pooledDataSource.setMinPoolSize(1);
+        pooledDataSource.setMaxPoolSize(3);
+        
 
         this.dataSource = pooledDataSource;
     }

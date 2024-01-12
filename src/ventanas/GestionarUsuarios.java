@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -61,6 +62,19 @@ public class GestionarUsuarios extends javax.swing.JFrame {
             usuario.getNombre_usuario(), usuario.getUsername(), usuario.getTipo_nivel()
         }));
 
+        jTable_Usuarios.addMouseListener(new  MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                int fila_point = jTable_Usuarios.rowAtPoint(e.getPoint());
+                int columna_point = 0;
+                
+                if(fila_point > -1){
+                    user_update = (String)model.getValueAt(fila_point, columna_point);
+                    InformacionUsuario informacionUsuario = new InformacionUsuario();
+                    informacionUsuario.setVisible(true);
+                }
+            }
+        });
     }
 
     @Override
