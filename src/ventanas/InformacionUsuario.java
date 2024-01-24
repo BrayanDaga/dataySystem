@@ -4,10 +4,15 @@
  */
 package ventanas;
 
+import clases.Conexion;
+import com.datasystem.controller.UsuarioController;
+import com.datasystem.modelos.Usuario;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -16,6 +21,7 @@ import javax.swing.WindowConstants;
  */
 public class InformacionUsuario extends javax.swing.JFrame {
 
+    private UsuarioController usuarioController;
     /**
      * Creates new form InformacionUsuario
      */
@@ -44,6 +50,19 @@ public class InformacionUsuario extends javax.swing.JFrame {
         this.repaint();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        usuarioController = new UsuarioController();
+        Usuario usuario = usuarioController.obtenerUsuarioConNombredeUsuario(user_update);
+        ID = usuario.getId_usuario();
+        jTextField_Nombre.setText(usuario.getNombre_usuario());
+        jTextField_Email.setText(usuario.getEmail());
+        jTextField_Telefono.setText(usuario.getTelefono());
+        jTextField_Username.setText(usuario.getUsername());
+        jTextField_RegistradoPor.setText(usuario.getRegistrado_por());
+
+        jComboBox_Estatus.setSelectedItem(usuario.getEstatus());
+        jComboBox_Niveles.setSelectedItem(usuario.getTipo_nivel());
+
     }
 
     /**
@@ -67,7 +86,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jTextField_Email = new javax.swing.JTextField();
         jTextField_Telefono = new javax.swing.JTextField();
         jTextField_Username = new javax.swing.JTextField();
-        jTextField_RegistradpPor = new javax.swing.JTextField();
+        jTextField_RegistradoPor = new javax.swing.JTextField();
         jComboBox_Estatus = new javax.swing.JComboBox<>();
         jComboBox_Niveles = new javax.swing.JComboBox<>();
         jButton_actualizar = new javax.swing.JButton();
@@ -146,13 +165,13 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jTextField_Username.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(jTextField_Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 210, -1));
 
-        jTextField_RegistradpPor.setBackground(new java.awt.Color(153, 153, 225));
-        jTextField_RegistradpPor.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jTextField_RegistradpPor.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField_RegistradpPor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField_RegistradpPor.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jTextField_RegistradpPor.setEnabled(false);
-        getContentPane().add(jTextField_RegistradpPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 210, -1));
+        jTextField_RegistradoPor.setBackground(new java.awt.Color(153, 153, 225));
+        jTextField_RegistradoPor.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jTextField_RegistradoPor.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField_RegistradoPor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField_RegistradoPor.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jTextField_RegistradoPor.setEnabled(false);
+        getContentPane().add(jTextField_RegistradoPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 210, -1));
 
         jComboBox_Estatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
         getContentPane().add(jComboBox_Estatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, -1, -1));
@@ -165,6 +184,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jButton_actualizar.setForeground(new java.awt.Color(255, 255, 255));
         jButton_actualizar.setText("Actualizar Usuario");
         jButton_actualizar.setBorder(null);
+        jButton_actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_actualizarActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 250, 210, 35));
 
         jButton_restaurarPassword.setBackground(new java.awt.Color(153, 153, 225));
@@ -172,6 +196,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jButton_restaurarPassword.setForeground(new java.awt.Color(255, 255, 255));
         jButton_restaurarPassword.setText("Restaurar Password");
         jButton_restaurarPassword.setBorder(null);
+        jButton_restaurarPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_restaurarPasswordActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_restaurarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 210, 35));
 
         jLabel2.setText("Creado por tutoriales Geekipedia Ernetsto");
@@ -182,6 +211,78 @@ public class InformacionUsuario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualizarActionPerformed
+
+        int permisos_cmb, estatus_cmb, validacion = 0;
+        String nombre, mail, telefono, username, pass, permisos_string = "", estatus_string = "";
+
+        mail = jTextField_Email.getText().trim();
+        username = jTextField_Username.getText().trim();
+        nombre = jTextField_Nombre.getText().trim();
+        telefono = jTextField_Telefono.getText().trim();
+        permisos_cmb = jComboBox_Niveles.getSelectedIndex() + 1;
+        estatus_cmb = jComboBox_Estatus.getSelectedIndex() + 1;
+
+        if (mail.equals("")) {
+            jTextField_Email.setBackground(Color.red);
+            validacion++;
+        }
+        if (username.equals("")) {
+            jTextField_Username.setBackground(Color.red);
+            validacion++;
+        }
+        if (nombre.equals("")) {
+            jTextField_Nombre.setBackground(Color.red);
+            validacion++;
+        }
+        if (telefono.equals("")) {
+            jTextField_Telefono.setBackground(Color.red);
+            validacion++;
+        }
+
+        if (validacion == 0) {
+            if (permisos_cmb == 1) {
+                permisos_string = "Administrador";
+            }
+
+            if (permisos_cmb == 2) {
+                permisos_string = "Capturista";
+            }
+
+            if (permisos_cmb == 3) {
+                permisos_string = "Tecnico";
+            }
+
+            if (estatus_cmb == 1) {
+                estatus_string = "Activo";
+            }
+            if (estatus_cmb == 2) {
+                estatus_string = "Inactivo";
+            }
+
+            if (this.usuarioController.nombreDeUsuarioNoDisponible(username, ID)) {
+                jTextField_Username.setBackground(Color.red);
+                JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible.");
+
+            } else {
+
+                var usuario = this.usuarioController.modificarUsuario(nombre, mail, telefono, username, permisos_string, estatus_string, ID);
+                JOptionPane.showMessageDialog(null, "Modificación correcta.");
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los datos");
+        }
+
+
+    }//GEN-LAST:event_jButton_actualizarActionPerformed
+
+    private void jButton_restaurarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_restaurarPasswordActionPerformed
+        RestaurarPassword restaurarPassword = new RestaurarPassword();
+        restaurarPassword.setVisible(true);
+    }//GEN-LAST:event_jButton_restaurarPasswordActionPerformed
 
     @Override
     public Image getIconImage() {
@@ -241,7 +342,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_titulo;
     private javax.swing.JTextField jTextField_Email;
     private javax.swing.JTextField jTextField_Nombre;
-    private javax.swing.JTextField jTextField_RegistradpPor;
+    private javax.swing.JTextField jTextField_RegistradoPor;
     private javax.swing.JTextField jTextField_Telefono;
     private javax.swing.JTextField jTextField_Username;
     // End of variables declaration//GEN-END:variables

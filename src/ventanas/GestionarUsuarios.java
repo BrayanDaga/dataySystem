@@ -34,7 +34,7 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     UsuarioController usuarioController;
 
     public GestionarUsuarios() {
-        usuarioController =  new UsuarioController();
+        usuarioController = new UsuarioController();
         initComponents();
         user = Login.user;
         setTitle("Usuarios registrados - Sesion de " + user);
@@ -59,20 +59,22 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
         var usuarios = this.usuarioController.listar();
         usuarios.forEach(usuario -> model.addRow(new Object[]{
+            usuario.getId_usuario(),
             usuario.getNombre_usuario(), usuario.getUsername(), usuario.getTipo_nivel()
         }));
 
-        jTable_Usuarios.addMouseListener(new  MouseAdapter(){
+        jTable_Usuarios.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseClicked(MouseEvent e) {
                 int fila_point = jTable_Usuarios.rowAtPoint(e.getPoint());
-                int columna_point = 0;
-                
-                if(fila_point > -1){
-                    user_update = (String)model.getValueAt(fila_point, columna_point);
-                    InformacionUsuario informacionUsuario = new InformacionUsuario();
-                    informacionUsuario.setVisible(true);
+                int columna_point = 2;
+
+                if (fila_point > -1) {
+                    user_update = (String) model.getValueAt(fila_point, columna_point);
+                    InformacionUsuario informacion_usuario = new InformacionUsuario();
+                    informacion_usuario.setVisible(true);
                 }
+
             }
         });
     }

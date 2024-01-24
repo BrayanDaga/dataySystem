@@ -71,6 +71,23 @@ public class UsuarioDAO {
 
     }
 
+    public boolean nombreDeUsuarioNoDisponible(String username, int ID) {
+        try {
+            final PreparedStatement statement = con.prepareStatement("select username from usuarios where username = ? and not id_usuario = ?");
+
+            try (statement) {
+                statement.setString(1, username);
+                statement.setInt(2, ID);
+                statement.execute();
+
+                ResultSet rs = statement.executeQuery();
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Usuario loguearse(String user, String pass) {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -110,20 +127,6 @@ public class UsuarioDAO {
         }
     }
 
-    /*	public List<Reserva> buscar() {
-		List<Reserva> reservas = new ArrayList<Reserva>();
-		try {
-			String sql = "SELECT id, fechaEntrada , fechaSalida, valor, formaPago FROM reservas";
-			try(PreparedStatement pstm = con.prepareStatement(sql)){
-				pstm.execute();
-				transformarResultado(reservas, pstm );
-			}
-			return reservas;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-     */
     public List<Usuario> listar() {
         List<Usuario> usuarios = new ArrayList<Usuario>();
         try {
@@ -137,7 +140,9 @@ public class UsuarioDAO {
 
                 try (resultSet) {
                     while (resultSet.next()) {
-                        usuarios.add(new Usuario(resultSet.getString("nombre_usuario"), resultSet.getString("username"),
+                        usuarios.add(new Usuario(
+                                resultSet.getInt("id_usuario"),
+                                resultSet.getString("nombre_usuario"), resultSet.getString("username"),
                                 resultSet.getString("tipo_nivel")));
                     }
                 }
@@ -147,5 +152,80 @@ public class UsuarioDAO {
         }
 
         return usuarios;
+    }
+
+    public Usuario obtenerUsuarioConNombredeUsuario(String username) {
+        try {
+            final String query = "SELECT id_usuario, nombre_usuario, email, telefono, username, password, tipo_nivel, estatus, registrado_por FROM usuarios WHERE username = ?";
+            try (PreparedStatement statement = con.prepareStatement(query)) {
+                statement.setString(1, username);
+
+                try (ResultSet rs = statement.executeQuery()) {
+                    if (rs.next()) {
+                        return new Usuario(
+                                rs.getInt("id_usuario"),
+                                rs.getString("nombre_usuario"),
+                                rs.getString("email"),
+                                rs.getString("telefono"),
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("tipo_nivel"),
+                                rs.getString("estatus"),
+                                rs.getString("registrado_por"));
+                    } else {
+                        // Handle the case when no user is found with the given username
+                        return null;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            // Log or handle the exception appropriately
+            throw new RuntimeException("Error retrieving user with username: " + username, e);
+        }
+    }
+
+    public int modificarUsuario(String nombre, String mail, String telefono, String username, String permisos_string,
+            String estatus_string, int ID) {
+
+        try {
+            final PreparedStatement statement = con.prepareStatement("update usuarios set nombre_usuario=?, email=?, telefono=?, username=?, tipo_nivel=?, estatus=? where id_usuario = ?");
+
+            try (statement) {
+                statement.setString(1, nombre);
+                statement.setString(2, mail);
+                statement.setString(3, telefono);
+                statement.setString(4, username);
+                statement.setString(5, permisos_string);
+                statement.setString(6, estatus_string);
+                statement.setInt(7, ID);
+
+                statement.execute();
+
+                int updateCount = statement.getUpdateCount();
+
+                return updateCount;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int cambiarPassword(String password, String username) {
+        try {
+            final PreparedStatement statement = con.prepareStatement("update usuarios set password=? where username = ?");
+
+            try (statement) {
+                statement.setString(1, password);
+                statement.setString(2, username);
+
+                statement.execute();
+
+                int updateCount = statement.getUpdateCount();
+
+                return updateCount;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
