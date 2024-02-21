@@ -6,6 +6,7 @@ package ventanas;
 
 import java.sql.*;
 import clases.Conexion;
+import com.datasystem.controller.UsuarioController;
 import com.mysql.cj.jdbc.PreparedStatementWrapper;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -19,48 +20,40 @@ import javax.swing.WindowConstants;
  * @author bm_vd
  */
 public class Administrador extends javax.swing.JFrame {
-    
+
     String user, nombre_usuario;
     public static int sesion_usuario;
+    UsuarioController usuarioController;
 
     /**
      * Creates new form Administrador
      */
     public Administrador() {
         initComponents();
+        this.usuarioController = new UsuarioController();
         user = Login.user;
         sesion_usuario = 1;
-        
+
         setSize(650, 430);
         setResizable(false);
         setTitle("Administrador - Session de " + user);
         setLocationRelativeTo(null);
-        
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        
+
         ImageIcon wallpaper = new ImageIcon("src/images/wallpaperPrincipal.jpg");
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(
                 jLabel_Wallpaper.getWidth(), jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
-        
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement ps = cn.prepareStatement(""
-                    + "SELECT nombre_usuario FROM usuarios WHERE username = ?");
-            ps.setString(1, user);
-            
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                nombre_usuario = rs.getString("nombre_usuario");
-                jLabel_NombreUsuario.setText(nombre_usuario);
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+
+        nombre_usuario = this.usuarioController.obtenerNombreDeUsuarioPorUserName(user);
+
+        if (nombre_usuario != null) {
+            jLabel_NombreUsuario.setText(nombre_usuario);
         }
-        
     }
-    
+
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
@@ -123,6 +116,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(jButton_Creatividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 120, 100));
 
         jButton_Capturista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/capturista.png"))); // NOI18N
+        jButton_Capturista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_CapturistaActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_Capturista, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 120, 100));
 
         jButton_Tecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addUser.png"))); // NOI18N
@@ -169,9 +167,15 @@ public class Administrador extends javax.swing.JFrame {
 
     private void jButton_GestionarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GestionarUsuarioActionPerformed
         // TODO add your handling code here:
-        GestionarUsuarios gestionarUsuarios = new  GestionarUsuarios();
+        GestionarUsuarios gestionarUsuarios = new GestionarUsuarios();
         gestionarUsuarios.setVisible(true);
     }//GEN-LAST:event_jButton_GestionarUsuarioActionPerformed
+
+    private void jButton_CapturistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CapturistaActionPerformed
+        // TODO add your handling code here:
+        Capturista capturista = new Capturista();
+        capturista.setVisible(true);
+    }//GEN-LAST:event_jButton_CapturistaActionPerformed
 
     /**
      * @param args the command line arguments

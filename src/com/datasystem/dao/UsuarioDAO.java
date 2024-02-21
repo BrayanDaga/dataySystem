@@ -44,7 +44,7 @@ public class UsuarioDAO {
                     while (resultSet.next()) {
                         usuario.setId_usuario(resultSet.getInt(1));
 
-                        System.out.println(String.format("Fue insertado el producto: %s", usuario));
+                        System.out.println(String.format("Fue insertado el usuario: %s", usuario));
                     }
                 }
             }
@@ -223,6 +223,26 @@ public class UsuarioDAO {
                 int updateCount = statement.getUpdateCount();
 
                 return updateCount;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String obtenerNombreDeUsuarioPorUserName(String username) {
+        try {
+            final PreparedStatement statement = con.prepareStatement("SELECT nombre_usuario FROM usuarios WHERE username = ?");
+
+            try (statement) {
+                statement.setString(1, username);
+                statement.execute();
+
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    return rs.getString("nombre_usuario");
+                } else {
+                    return null;
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

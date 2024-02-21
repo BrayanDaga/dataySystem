@@ -1,7 +1,8 @@
 CREATE DATABASE bd_ds  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 use bd_ds;
+
 CREATE TABLE Usuarios(
-	id_usuario int auto_increment,
+    id_usuario int auto_increment,
     nombre_usuario varchar(50),
     email varchar(50),
     telefono varchar(50),
@@ -14,7 +15,7 @@ CREATE TABLE Usuarios(
 );
 
 CREATE TABLE Clientes(
-	id_cliente int auto_increment,
+    id_cliente int auto_increment,
     nombre_cliente varchar(50),
     email_cliente varchar(50),
     tel_cliente varchar(50),
@@ -24,7 +25,7 @@ CREATE TABLE Clientes(
 );
 
 CREATE TABLE Equipos(
-	id_equipo int auto_increment,
+    id_equipo int auto_increment,
     id_cliente int ,
     tipo_equipo varchar(50),
     marca varchar(50),
