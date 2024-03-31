@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/com/datasystem/dao/EquipoDAO.java</file>
             <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/ventanas/RegistrarEquipo.java</file>
-            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/ventanas/GestionarClientes.java</file>
-            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/ventanas/RegistrarCliente.java</file>
-            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/ventanas/InformacionCliente.java</file>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/com/datasystem/modelos/Cliente.java</file>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/com/datasystem/modelos/Equipo.java</file>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/com/datasystem/dao/ClienteDAO.java</file>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/ventanas/GestionarUsuarios.java</file>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/com/datasystem/controller/EquipoController.java</file>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/src/ventanas/Capturista.java</file>
+            <file>file:/C:/Users/bm_vd/Documents/NetBeansProjects/DataSystem/database.sql</file>
         </group>
     </open-files>
 </project-private>

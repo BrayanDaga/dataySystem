@@ -4,17 +4,47 @@
  */
 package ventanas;
 
+import com.datasystem.controller.EquipoController;
+import com.datasystem.modelos.Equipo;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.WindowConstants;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author bm_vd
  */
 public class RegistrarEquipo extends javax.swing.JFrame {
 
+    int IDcliente_update = 0;
+    String user = "", nom_cliente = "";
+    EquipoController equipoController;
+
     /**
      * Creates new form RegistrarEquipo
      */
     public RegistrarEquipo() {
         initComponents();
+        user = Login.user;
+        IDcliente_update = GestionarClientes.IDcliente_update;
+
+        setTitle("Registrar nuevo equipo para " + nom_cliente);
+        setSize(630, 445);
+        setResizable(false);
+        setLocationRelativeTo(null);
+
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        this.equipoController = new EquipoController();
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
     }
 
     /**
@@ -29,18 +59,19 @@ public class RegistrarEquipo extends javax.swing.JFrame {
         jLabel_titulo = new javax.swing.JLabel();
         jLabel_Nombre = new javax.swing.JLabel();
         jLabel_Email = new javax.swing.JLabel();
-        jTextField_Email = new javax.swing.JTextField();
+        jTextField_NumSerie = new javax.swing.JTextField();
         jLabel_Telefono = new javax.swing.JLabel();
         jLabel_Direccion = new javax.swing.JLabel();
-        jTextField_Direccion = new javax.swing.JTextField();
+        jTextField_Modelo = new javax.swing.JTextField();
         jLabel_UltimaModicacion = new javax.swing.JLabel();
         jTextField_NombreCliente = new javax.swing.JTextField();
-        jLabel_Wallpaper = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox_TipoEquipo = new javax.swing.JComboBox<>();
+        jComboBox_Marcas = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        jTextPane_observaciones = new javax.swing.JTextPane();
+        jButton_Registrar = new javax.swing.JButton();
+        jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -53,41 +84,41 @@ public class RegistrarEquipo extends javax.swing.JFrame {
         jLabel_Nombre.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel_Nombre.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Nombre.setText("Nombre del cliente");
-        getContentPane().add(jLabel_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
+        getContentPane().add(jLabel_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
         jLabel_Email.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel_Email.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Email.setText("Tipo de Equipo");
-        getContentPane().add(jLabel_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
+        getContentPane().add(jLabel_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
-        jTextField_Email.setBackground(new java.awt.Color(153, 153, 225));
-        jTextField_Email.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jTextField_Email.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField_Email.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField_Email.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(jTextField_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, -1));
+        jTextField_NumSerie.setBackground(new java.awt.Color(153, 153, 225));
+        jTextField_NumSerie.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jTextField_NumSerie.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField_NumSerie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField_NumSerie.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(jTextField_NumSerie, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 210, -1));
 
         jLabel_Telefono.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel_Telefono.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Telefono.setText("Marca");
-        getContentPane().add(jLabel_Telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        getContentPane().add(jLabel_Telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, -1));
 
         jLabel_Direccion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel_Direccion.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Direccion.setText("Modelo");
-        getContentPane().add(jLabel_Direccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
+        getContentPane().add(jLabel_Direccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, -1, -1));
 
-        jTextField_Direccion.setBackground(new java.awt.Color(153, 153, 225));
-        jTextField_Direccion.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jTextField_Direccion.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField_Direccion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField_Direccion.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(jTextField_Direccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 210, -1));
+        jTextField_Modelo.setBackground(new java.awt.Color(153, 153, 225));
+        jTextField_Modelo.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jTextField_Modelo.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField_Modelo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField_Modelo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(jTextField_Modelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 210, -1));
 
         jLabel_UltimaModicacion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel_UltimaModicacion.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_UltimaModicacion.setText("Numero de serie");
-        getContentPane().add(jLabel_UltimaModicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
+        getContentPane().add(jLabel_UltimaModicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, -1, -1));
 
         jTextField_NombreCliente.setBackground(new java.awt.Color(153, 153, 225));
         jTextField_NombreCliente.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -95,24 +126,89 @@ public class RegistrarEquipo extends javax.swing.JFrame {
         jTextField_NombreCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField_NombreCliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTextField_NombreCliente.setEnabled(false);
-        getContentPane().add(jTextField_NombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 210, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 445));
+        getContentPane().add(jTextField_NombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 210, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+        jComboBox_TipoEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Laptop", "Desktop", "Impresora", "Multifuncional" }));
+        getContentPane().add(jComboBox_TipoEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
+        jComboBox_Marcas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acer", "Alienware", "Apple", "Asus", "Brother", "Dell", "HP", "Lenovo", "Samsung", "Toshiba", "Xerox" }));
+        getContentPane().add(jComboBox_Marcas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, -1, -1));
 
         jLabel1.setText("Daño reportado y observaciones");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane1.setViewportView(jTextPane_observaciones);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 260, 130));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 330, 230));
+
+        jButton_Registrar.setBackground(new java.awt.Color(153, 153, 225));
+        jButton_Registrar.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jButton_Registrar.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_Registrar.setText("Registrar Equipo");
+        jButton_Registrar.setBorder(null);
+        jButton_Registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_RegistrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_Registrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 310, 210, 35));
+
+        jLabel_Wallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wallpaperPrincipal.jpg"))); // NOI18N
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 445));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton_RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RegistrarActionPerformed
+
+        int validacion = 0;
+        String tipo_equipo, marca, modelo, num_serie, dia_ingreso, mes_ingreso, annio_ingreso,
+                estatus, observaciones;
+
+        tipo_equipo = jComboBox_TipoEquipo.getSelectedItem().toString();
+        marca = jComboBox_Marcas.getSelectedItem().toString();
+        modelo = jTextField_Modelo.getText().trim();
+        num_serie = jTextField_NumSerie.getText().trim();
+        observaciones = jTextPane_observaciones.getText();
+        estatus = "Nuevo ingreso";
+
+        Calendar calendar = Calendar.getInstance();
+
+        dia_ingreso = Integer.toString(calendar.get(Calendar.DATE));
+        mes_ingreso = Integer.toString(calendar.get(Calendar.MONTH));
+        annio_ingreso = Integer.toString(calendar.get(Calendar.YEAR));
+
+        if (modelo.equals("")) {
+            jTextField_Modelo.setBackground(Color.red);
+            validacion++;
+        }
+        if (num_serie.equals("")) {
+            jTextField_NumSerie.setBackground(Color.red);
+            validacion++;
+        }
+        if (observaciones.equals("")) {
+            jTextPane_observaciones.setText("Sin observaciones.");
+        }
+
+        if (validacion == 0) {
+
+            jTextField_NombreCliente.setBackground(Color.green);
+            jTextField_Modelo.setBackground(Color.green);
+            jTextField_NumSerie.setBackground(Color.green);
+
+            Equipo equipo = new Equipo(IDcliente_update, tipo_equipo, marca, modelo,
+                    num_serie, dia_ingreso, mes_ingreso, annio_ingreso, observaciones,
+                    estatus, user);
+
+            this.equipoController.guardar(equipo);
+
+            JOptionPane.showMessageDialog(null, "Registro exitoso.");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
+        }
+
+    }//GEN-LAST:event_jButton_RegistrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,8 +246,9 @@ public class RegistrarEquipo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton jButton_Registrar;
+    private javax.swing.JComboBox<String> jComboBox_Marcas;
+    private javax.swing.JComboBox<String> jComboBox_TipoEquipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_Direccion;
     private javax.swing.JLabel jLabel_Email;
@@ -161,9 +258,9 @@ public class RegistrarEquipo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Wallpaper;
     private javax.swing.JLabel jLabel_titulo;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField_Direccion;
-    private javax.swing.JTextField jTextField_Email;
+    private javax.swing.JTextField jTextField_Modelo;
     private javax.swing.JTextField jTextField_NombreCliente;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextField jTextField_NumSerie;
+    private javax.swing.JTextPane jTextPane_observaciones;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,8 @@
 package ventanas;
 
 import com.datasystem.controller.UsuarioController;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.WindowConstants;
 
 /**
@@ -41,6 +43,12 @@ public class Capturista extends javax.swing.JFrame {
             jLabel_NombreUsuario.setText(nombre_usuario);
         }
 
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
     }
 
     /**

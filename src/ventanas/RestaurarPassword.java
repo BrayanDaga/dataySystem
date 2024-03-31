@@ -6,6 +6,8 @@ package ventanas;
 
 import com.datasystem.controller.UsuarioController;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -14,20 +16,22 @@ import javax.swing.WindowConstants;
  * @author bm_vd
  */
 public class RestaurarPassword extends javax.swing.JFrame {
-    String user= "", user_update ="";
+
+    String user = "", user_update = "";
     private UsuarioController usuarioController;
+
     /**
      * Creates new form RestaurarPassword
      */
     public RestaurarPassword() {
         initComponents();
-        usuarioController =  new UsuarioController();
+        usuarioController = new UsuarioController();
         user = Login.user;
         user_update = GestionarUsuarios.user_update;
         System.out.println(user_update);
-        setSize(360,260);
+        setSize(360, 260);
         setResizable(false);
-        setTitle("Cambio de password para : "+ user_update);
+        setTitle("Cambio de password para : " + user_update);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -99,25 +103,33 @@ public class RestaurarPassword extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
+    }
+
+    
+    
     private void jButton_restaurarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_restaurarPasswordActionPerformed
         String password, confirmacion_password;
         password = txt_Password.getText().trim();
         confirmacion_password = txt_PasswordConfirmacion.getText().trim();
-        
-        if(!password.equals("") && !confirmacion_password.equals("")){
-            if(password.equals(confirmacion_password)){
-                var  nmodificado= usuarioController.cambiarPassword(password,user_update);
-                if(nmodificado>0){
+
+        if (!password.equals("") && !confirmacion_password.equals("")) {
+            if (password.equals(confirmacion_password)) {
+                var nmodificado = usuarioController.cambiarPassword(password, user_update);
+                if (nmodificado > 0) {
                     txt_Password.setBackground(Color.GREEN);
                     txt_PasswordConfirmacion.setBackground(Color.GREEN);
                     JOptionPane.showMessageDialog(null, "Restauracion exitosa");
                 }
-            }else{
-            txt_PasswordConfirmacion.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
-   
+            } else {
+                txt_PasswordConfirmacion.setBackground(Color.red);
+                JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+
             }
-        }else{
+        } else {
             txt_Password.setBackground(Color.red);
             txt_PasswordConfirmacion.setBackground(Color.red);
             JOptionPane.showMessageDialog(null, "No se aceptan contraseñas vacias");

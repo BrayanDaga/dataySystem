@@ -4,6 +4,9 @@
  */
 package ventanas;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 /**
  *
  * @author bm_vd
@@ -43,6 +46,11 @@ public class Tecnico extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
+    }
 
     /**
      * @param args the command line arguments

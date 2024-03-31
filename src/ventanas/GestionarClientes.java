@@ -5,6 +5,8 @@
 package ventanas;
 
 import com.datasystem.controller.ClienteController;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
@@ -66,6 +68,12 @@ public class GestionarClientes extends javax.swing.JFrame {
 
             }
         });
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
     }
 
     /**

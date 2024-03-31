@@ -165,8 +165,12 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
- 
-   
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
+    }
+
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
@@ -216,7 +220,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
             permisos_string = "Tecnico";
         }
 
-        usuarioController =  new UsuarioController();
+        usuarioController = new UsuarioController();
         boolean existe = usuarioController.existeUsuarioConUsername(username);
 
         if (existe) {
@@ -249,11 +253,6 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    @Override
-    public Image getIconImage() {
-        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
-        return retValue;
-    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

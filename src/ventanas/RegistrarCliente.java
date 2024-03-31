@@ -9,6 +9,8 @@ import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import com.datasystem.modelos.Cliente;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  *
@@ -34,6 +36,12 @@ public class RegistrarCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
     }
 
     /**

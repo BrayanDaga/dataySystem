@@ -5,10 +5,13 @@
 package ventanas;
 
 import com.datasystem.controller.ClienteController;
+import com.datasystem.controller.EquipoController;
 import java.awt.Color;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import com.datasystem.modelos.Cliente;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import static ventanas.GestionarClientes.IDcliente_update;
@@ -21,6 +24,8 @@ public class InformacionCliente extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
     ClienteController clienteController;
+    EquipoController equipoController;
+    
     int IDcliente_update = 0;
     public static int IDequipo = 0;
     String user = "";
@@ -31,6 +36,8 @@ public class InformacionCliente extends javax.swing.JFrame {
         IDcliente_update = GestionarClientes.IDcliente_update;
 
         clienteController = new ClienteController();
+        equipoController = new EquipoController();
+        
         setSize(630, 450);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -40,10 +47,6 @@ public class InformacionCliente extends javax.swing.JFrame {
         jTableEquipo = new JTable(model);
         jScrollPane1.setViewportView(jTableEquipo);
 
-        model.addColumn("ID equipo");
-        model.addColumn("Tipo de equipo");
-        model.addColumn("Marca");
-        model.addColumn("Estatus");
 
         Cliente cliente = clienteController.encontrarClientePorId(IDcliente_update);
 
@@ -53,6 +56,26 @@ public class InformacionCliente extends javax.swing.JFrame {
         jTextField_Direccion.setText(cliente.getDireccion());
         jTextField_UltimaModificacion.setText(cliente.getUltima_modificacion());
 
+        
+        model.addColumn("ID equipo");
+        model.addColumn("Tipo de equipo");
+        model.addColumn("Marca");
+        model.addColumn("Estatus");
+        
+        var equipos = this.equipoController.listar(IDcliente_update);
+        equipos.forEach(equipo -> model.addRow(new Object[]{
+            equipo.getId_equipo(),
+            equipo.getTipo_equipo(),
+            equipo.getMarca(),
+            equipo.getEstatus()
+        }));
+
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
     }
 
     /**
@@ -200,7 +223,8 @@ public class InformacionCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_registrarActionPerformed
-
+        RegistrarEquipo registrarEquipo = new RegistrarEquipo();
+        registrarEquipo.setVisible(true);
     }//GEN-LAST:event_jButton_registrarActionPerformed
 
     private void jButton_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualizarActionPerformed
